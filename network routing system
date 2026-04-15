@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// BST node structure
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+// Create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Insert node into BST
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL) {
+        return createNode(value);
+    }
+
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else if (value > root->data) {
+        root->right = insert(root->right, value);
+    }
+
+    return root;
+}
+
+// Inorder traversal (Left Root Right)
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    int n, i, value, newRouter;
+    struct Node* root = NULL;
+
+    // Read number of routers
+    scanf("%d", &n);
+
+    // Check invalid input
+    if (n <= 0 || n == -1) {
+        printf("Invalid input");
+        return 0;
+    }
+
+    // Read router IDs
+    for (i = 0; i < n; i++) {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    // Read router ID to insert
+    scanf("%d", &newRouter);
+
+    // Insert new router
+    root = insert(root, newRouter);
+
+    // Print routing table in inorder
+    inorder(root);
+
+    return 0;
+}
